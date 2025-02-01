@@ -38,13 +38,6 @@ public class TrainerWorkloadService {
         trainerWorkloadRepository.save(trainerWorkload);
     }
 
-    //    /** getTrainerWorkload. */
-    //    public Map<String, Integer> getTrainerWorkload(String username) {
-    //        return repository.findById(username)
-    //            .map(TrainerWorkload::getWorkload)
-    //            .orElse(Collections.emptyMap());
-    //    }
-
     /**
      * update workload based on actionType.
      */
