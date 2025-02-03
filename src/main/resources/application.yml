@@ -2,7 +2,7 @@ server:
   port: 8090
 spring:
   application:
-    name: TrainerWorkloadService
+    name: trainer-workload-service
   datasource:
     driverClassName: org.h2.Driver
     password: ''
@@ -26,3 +26,11 @@ logging:
       springframework:
         security: debug
     root: info
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
