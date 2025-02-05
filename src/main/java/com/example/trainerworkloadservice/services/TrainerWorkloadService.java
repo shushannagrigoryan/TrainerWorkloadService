@@ -1,9 +1,9 @@
-package com.example.trainerworkloadservice;
+package com.example.trainerworkloadservice.services;
 
 import com.example.trainerworkloadservice.entities.Trainer;
 import com.example.trainerworkloadservice.entities.TrainerWorkload;
+import com.example.trainerworkloadservice.enums.ActionType;
 import com.example.trainerworkloadservice.repositories.TrainerWorkloadRepository;
-import com.example.trainerworkloadservice.services.TrainerService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,9 +20,16 @@ public class TrainerWorkloadService {
     private final TrainerService trainerService;
 
     /**
-     * update trainer workload.
+     * Updates trainer's workload for the given month.
+     *
+     * @param username username
+     * @param firstName firstName
+     * @param lastName lastName
+     * @param isActive trainer active status
+     * @param trainingDate trainingDate
+     * @param duration training duration
+     * @param actionType actionType (ADD/DELETE)
      */
-
     @Transactional
     public void updateTrainerWorkload(String username, String firstName, String lastName, boolean isActive,
                                       LocalDateTime trainingDate, BigDecimal duration, ActionType actionType) {
@@ -39,7 +46,12 @@ public class TrainerWorkloadService {
     }
 
     /**
-     * update workload based on actionType.
+     * Updates workload based on actionType.
+     *
+     * @param trainingDuration training duration
+     * @param additionalDuration duration to ADD/DELETE
+     * @param actionType actionType(ADD/DELETE)
+     * @return {@code BigDecimal}
      */
     private BigDecimal updateWorkload(BigDecimal trainingDuration,
                                       BigDecimal additionalDuration, ActionType actionType) {
@@ -55,7 +67,11 @@ public class TrainerWorkloadService {
 
 
     /**
-     * get trainer workload.
+     * Returns trainer's current workload or creates a new workload if trainer's workload is not found.
+     *
+     * @param trainer {@code Trainer}
+     * @param trainingDate trainingDate
+     * @return {@code TrainerWorkload}
      */
     public TrainerWorkload getOrCreateTrainerWorkload(Trainer trainer, LocalDateTime trainingDate) {
         log.debug("Request to retrieve trainerWorkload by username,"
@@ -68,7 +84,12 @@ public class TrainerWorkloadService {
     }
 
     /**
-     * getTrainerWorkload.
+     * Returns trainer's workload for the given month.
+     *
+     * @param username username
+     * @param year year
+     * @param month month
+     * @return {@code BigDecimal}
      */
     public BigDecimal getTrainerWorkload(String username, int year, int month) {
         log.debug("Getting trainers: {} workload for the given month: {}.",

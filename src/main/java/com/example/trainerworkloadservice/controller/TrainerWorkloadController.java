@@ -1,8 +1,15 @@
 package com.example.trainerworkloadservice.controller;
 
-import com.example.trainerworkloadservice.TrainerWorkloadService;
 import com.example.trainerworkloadservice.dto.requestdto.UpdateTrainerWorkloadRequestDto;
 import com.example.trainerworkloadservice.dto.responsedto.ResponseDto;
+import com.example.trainerworkloadservice.exceptionhandlers.ExceptionResponse;
+import com.example.trainerworkloadservice.services.TrainerWorkloadService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -21,13 +28,54 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "TrainerWorkloadController")
 public class TrainerWorkloadController {
     private final TrainerWorkloadService trainerWorkloadService;
 
     /**
-     * update workload.
+     * Updates trainer's workload for the given month.
+     *
+     * @param request {@code UpdateTrainerWorkloadRequestDto}
+     * @return {@code ResponseEntity<ResponseDto<String>>}
      */
     @PutMapping("/workload")
+    @Operation(description = "Updating trainer's workload")
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully updated trainer's workload.",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseEntity.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The resource you were trying to reach is not found",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "405",
+                description = "Method is not allowed.",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad request.",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class)
+                )
+            )
+        }
+    )
     public ResponseEntity<ResponseDto<String>> updateTrainerWorkload(
         @Valid @RequestBody UpdateTrainerWorkloadRequestDto request) {
         trainerWorkloadService.updateTrainerWorkload(
@@ -45,9 +93,53 @@ public class TrainerWorkloadController {
         return ResponseEntity.ok(responseDto);
     }
 
+
     /**
-     * get workload.
+     * Returns trainer's workload for a given month.
+     *
+     * @param username username
+     * @param year     year
+     * @param month    month
+     * @return {@code ResponseEntity<ResponseDto<BigDecimal>>}
      */
+
+    @Operation(description = "Getting trainer's workload for a given month.")
+    @ApiResponses(
+        {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved trainer's workload for a given month.",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ResponseEntity.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "The resource you were trying to reach is not found",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "405",
+                description = "Method is not allowed.",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad request.",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class)
+                )
+            )
+        }
+    )
     @GetMapping("/workload")
     public ResponseEntity<ResponseDto<BigDecimal>> getTrainerWorkloadByMonth(
         @RequestParam("username") @NotBlank(message = "Username can't be blank") String username,
