@@ -1,6 +1,8 @@
 package com.example.trainerworkloadservice.dto.requestdto;
 
 import com.example.trainerworkloadservice.ActionType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -15,11 +17,25 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class UpdateTrainerWorkloadRequestDto {
+    @NotBlank(message = "Username cannot be blank")
     private String username;
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
     private Boolean isActive;
+    //@PastOrPresent(message = "Training date cannot be in the future")
+    @NotNull(message = "Training date is required.")
     private LocalDateTime trainingDate;
+    @NotNull(message = "Training duration is required")
+    //@DecimalMin(value = "0.1", message = "Training duration must be positive")
     private BigDecimal trainingDuration;
+    @NotNull(message = "Action type is required")
     private ActionType actionType;
+
+
+//    @NotNull(message = "Training date is required.")
+//    private LocalDateTime trainingDate;
+//    @NotNull(message = "Training duration is required.")
+//    private BigDecimal trainingDuration;
 }

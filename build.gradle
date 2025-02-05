@@ -44,6 +44,7 @@ dependencies {
     implementation group: 'io.micrometer', name: 'micrometer-core', version: '1.13.6'
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.github.openfeign:feign-micrometer'
+    implementation 'jakarta.validation:jakarta.validation-api'
 }
 
 dependencyManagement {
