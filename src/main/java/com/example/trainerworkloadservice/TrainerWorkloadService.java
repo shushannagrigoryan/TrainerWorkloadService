@@ -67,6 +67,7 @@ public class TrainerWorkloadService {
                 new TrainerWorkload(trainingDate.getYear(), trainingDate.getMonthValue(), BigDecimal.ZERO, trainer));
     }
 
+
     /**
      * getTrainerWorkload.
      */
