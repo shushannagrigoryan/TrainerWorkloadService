@@ -30,6 +30,7 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TrainerWorkload> trainerWorkloads = new ArrayList<>();
 
+
     /**
      * constructor.
      */

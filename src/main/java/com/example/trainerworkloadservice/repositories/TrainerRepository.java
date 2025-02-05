@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TrainerRepository extends JpaRepository<Trainer, String> {
     Optional<Trainer> findByUsername(String username);
+
 }

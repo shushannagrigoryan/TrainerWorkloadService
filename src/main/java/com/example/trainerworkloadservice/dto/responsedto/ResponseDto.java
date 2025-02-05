@@ -17,6 +17,7 @@ public class ResponseDto<T> {
     /**
      * Constructs a responseDto object.
      */
+
     public ResponseDto(T payload, String message) {
         this.payload = payload;
         this.message = message;

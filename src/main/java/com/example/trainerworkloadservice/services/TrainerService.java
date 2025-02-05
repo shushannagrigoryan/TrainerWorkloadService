@@ -21,6 +21,7 @@ public class TrainerService {
      * @param isActive  isActive
      * @return {@code Trainer}
      */
+
     public Trainer getOrCreateTrainer(String username, String firstName, String lastName, Boolean isActive) {
         log.debug("Request to retrieve trainer by username if present or create a new trainer if not.");
         return trainerRepository.findByUsername(username)

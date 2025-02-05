@@ -22,4 +22,5 @@ public class UpdateTrainerWorkloadRequestDto {
     private LocalDateTime trainingDate;
     private BigDecimal trainingDuration;
     private ActionType actionType;
+
 }

@@ -15,4 +15,5 @@ import lombok.ToString;
 public class TrainerWorkloadRequestDto {
     private String username;
     private LocalDateTime trainingDate;
+
 }

@@ -33,6 +33,7 @@ public class TrainerWorkload {
     /**
      * constructor.
      */
+
     public TrainerWorkload(int year, int month, BigDecimal duration, Trainer trainer) {
         this.year = year;
         this.month = month;

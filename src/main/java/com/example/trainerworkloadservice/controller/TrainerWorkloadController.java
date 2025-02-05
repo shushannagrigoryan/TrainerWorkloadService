@@ -40,6 +40,7 @@ public class TrainerWorkloadController {
         return ResponseEntity.ok(responseDto);
     }
 
+
     /**
      * get workload.
      */

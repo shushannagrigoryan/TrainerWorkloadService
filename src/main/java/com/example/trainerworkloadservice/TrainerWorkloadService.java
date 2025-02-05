@@ -71,6 +71,7 @@ public class TrainerWorkloadService {
     /**
      * getTrainerWorkload.
      */
+
     public BigDecimal getTrainerWorkload(String username, int year, int month) {
         log.debug("Getting trainers: {} workload for the given month: {}.",
             username, year + ":" + month);
