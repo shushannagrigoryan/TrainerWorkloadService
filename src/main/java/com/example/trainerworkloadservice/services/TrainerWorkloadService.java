@@ -22,13 +22,13 @@ public class TrainerWorkloadService {
     /**
      * Updates trainer's workload for the given month.
      *
-     * @param username username
-     * @param firstName firstName
-     * @param lastName lastName
-     * @param isActive trainer active status
+     * @param username     username
+     * @param firstName    firstName
+     * @param lastName     lastName
+     * @param isActive     trainer active status
      * @param trainingDate trainingDate
-     * @param duration training duration
-     * @param actionType actionType (ADD/DELETE)
+     * @param duration     training duration
+     * @param actionType   actionType (ADD/DELETE)
      */
     @Transactional
     public void updateTrainerWorkload(String username, String firstName, String lastName, boolean isActive,
@@ -48,9 +48,9 @@ public class TrainerWorkloadService {
     /**
      * Updates workload based on actionType.
      *
-     * @param trainingDuration training duration
+     * @param trainingDuration   training duration
      * @param additionalDuration duration to ADD/DELETE
-     * @param actionType actionType(ADD/DELETE)
+     * @param actionType         actionType(ADD/DELETE)
      * @return {@code BigDecimal}
      */
     private BigDecimal updateWorkload(BigDecimal trainingDuration,
@@ -69,7 +69,7 @@ public class TrainerWorkloadService {
     /**
      * Returns trainer's current workload or creates a new workload if trainer's workload is not found.
      *
-     * @param trainer {@code Trainer}
+     * @param trainer      {@code Trainer}
      * @param trainingDate trainingDate
      * @return {@code TrainerWorkload}
      */
@@ -83,14 +83,16 @@ public class TrainerWorkloadService {
                 new TrainerWorkload(trainingDate.getYear(), trainingDate.getMonthValue(), BigDecimal.ZERO, trainer));
     }
 
+
     /**
      * Returns trainer's workload for the given month.
      *
      * @param username username
-     * @param year year
-     * @param month month
+     * @param year     year
+     * @param month    month
      * @return {@code BigDecimal}
      */
+
     public BigDecimal getTrainerWorkload(String username, int year, int month) {
         log.debug("Getting trainers: {} workload for the given month: {}.",
             username, year + ":" + month);
