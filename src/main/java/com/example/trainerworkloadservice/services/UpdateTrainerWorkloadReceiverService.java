@@ -7,6 +7,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,14 +15,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UpdateTrainerWorkloadReceiverService {
     private static final String UPDATE_TRAINER_WORKLOAD_QUEUE = "update-trainer-workload-queue";
+    private static final String UPDATE_TRAINER_WORKLOAD_RESPONSE_QUEUE = "update-trainer-workload-response-queue";
+    private static final long TIMEOUT_THRESHOLD = 5000;
     private final TrainerWorkloadService trainerWorkloadService;
     private final Validator validator;
+    private final JmsTemplate jmsTemplate;
 
-    /** receiveMessage for update trainer's workload. */
+    /**
+     * receiveMessage for update trainer's workload.
+     */
     @JmsListener(destination = UPDATE_TRAINER_WORKLOAD_QUEUE)
     public void receiveMessage(UpdateTrainerWorkloadRequestDto updateTrainerWorkloadRequestDto) {
         log.debug("Receiving message from ActiveMQ");
         log.debug("message: {} ", updateTrainerWorkloadRequestDto);
+        long startTime = System.currentTimeMillis();
         Set<ConstraintViolation<UpdateTrainerWorkloadRequestDto>> violations =
             validator.validate(updateTrainerWorkloadRequestDto);
 
@@ -42,6 +49,14 @@ public class UpdateTrainerWorkloadReceiverService {
             updateTrainerWorkloadRequestDto.getTrainingDuration(),
             updateTrainerWorkloadRequestDto.getActionType()
         );
+
+        long time = System.currentTimeMillis() - startTime;
+        if (time > TIMEOUT_THRESHOLD) {
+            log.warn("Processing took too long: {}", time);
+            throw new RuntimeException("Processing took too long.");
+        }
+        jmsTemplate.convertAndSend(UPDATE_TRAINER_WORKLOAD_RESPONSE_QUEUE, "Success.");
+
         log.debug("Successfully received message from ActiveMQ");
     }
 }
