@@ -1,16 +1,19 @@
 package com.example.trainerworkloadservice.services;
 
 import com.example.trainerworkloadservice.dto.requestdto.TrainerWorkloadRequestDto;
+import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Validated
 public class TrainerWorkloadReceiverService {
     private static final String TRAINER_WORKLOAD_REQUEST_QUEUE = "trainer-workload-request-queue";
     private static final String TRAINER_WORKLOAD_RESPONSE_QUEUE = "trainer-workload-response-queue";
@@ -20,7 +23,7 @@ public class TrainerWorkloadReceiverService {
 
     /** Listener for the TRAINER_WORKLOAD_REQUEST_QUEUE.*/
     @JmsListener(destination = TRAINER_WORKLOAD_REQUEST_QUEUE)
-    public void processWorkloadRequest(TrainerWorkloadRequestDto request) {
+    public void processWorkloadRequest(@Valid TrainerWorkloadRequestDto request) {
         log.debug("Processing WorkloadRequest");
         long startTime = System.currentTimeMillis();
 
