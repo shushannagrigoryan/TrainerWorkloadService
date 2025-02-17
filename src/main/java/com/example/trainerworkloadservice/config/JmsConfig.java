@@ -3,6 +3,7 @@ package com.example.trainerworkloadservice.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.tracing.Tracer;
+import jakarta.jms.ConnectionFactory;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.Session;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -34,14 +34,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @RequiredArgsConstructor
 public class JmsConfig {
     private final Tracer tracer;
+    private final ConnectionFactory connectionFactory;
 
-    /**
-     * ActiveMQConnectionFactory.
-     */
-    @Bean
-    public ActiveMQConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
-    }
 
     /**
      * MessageConverter.
@@ -84,7 +78,6 @@ public class JmsConfig {
         return message -> {
             log.debug("Running the message post processor.");
             if (tracer.currentSpan() != null) {
-                log.debug("traceId  = {} ", Objects.requireNonNull(tracer.currentSpan()).context().traceId());
                 message.setStringProperty(
                     "traceId", Objects.requireNonNull(tracer.currentSpan()).context().traceId());
             }
@@ -98,7 +91,7 @@ public class JmsConfig {
     @Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ObservationRegistry observationRegistry) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory());
+        factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(jacksonJmsMessageConverter());
         factory.setTransactionManager(jmsTransactionManager());
         factory.setObservationRegistry(observationRegistry);
@@ -111,7 +104,7 @@ public class JmsConfig {
 
     @Bean
     public PlatformTransactionManager jmsTransactionManager() {
-        return new JmsTransactionManager(connectionFactory());
+        return new JmsTransactionManager(connectionFactory);
     }
 
     /**
@@ -119,7 +112,7 @@ public class JmsConfig {
      */
     @Bean
     public JmsTemplate jmsTemplate() {
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
         jmsTemplate.setDeliveryPersistent(true);
         jmsTemplate.setSessionTransacted(true);
