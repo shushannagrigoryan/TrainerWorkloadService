@@ -38,7 +38,7 @@ public class JmsConfig {
 
 
     /**
-     * MessageConverter.
+     * MessageConverter for JSON serialization and deserialization.
      */
     @Bean
     public MessageConverter jacksonJmsMessageConverter() {
@@ -53,6 +53,8 @@ public class JmsConfig {
             com.example.trainerworkloadservice.dto.requestdto.UpdateTrainerWorkloadRequestDto.class);
         typeIdMappings.put("org.example.dto.requestdto.TrainerWorkloadRequestDto",
             com.example.trainerworkloadservice.dto.requestdto.TrainerWorkloadRequestDto.class);
+        typeIdMappings.put("org.example.dto.requestdto.UpdateTrainerWorkloadRequestDtoList",
+            com.example.trainerworkloadservice.dto.requestdto.UpdateTrainerWorkloadRequestDtoList.class);
 
         converter.setTypeIdMappings(typeIdMappings);
 
@@ -72,7 +74,9 @@ public class JmsConfig {
 
     }
 
-    /** MessagePostProcessor config. */
+    /**
+     * MessagePostProcessor for Jms messages.
+     */
     @Bean
     public MessagePostProcessor tracingMessagePostProcessor() {
         return message -> {
@@ -86,7 +90,7 @@ public class JmsConfig {
     }
 
     /**
-     * DefaultJmsListenerContainerFactory.
+     * Config for DefaultJmsListenerContainerFactory.
      */
     @Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ObservationRegistry observationRegistry) {
