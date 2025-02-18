@@ -12,6 +12,14 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  data:
+    mongodb:
+      authentication-database: admin
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
+      database: trainerWorkloadDB
+      port: 27017
+      host: localhost
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
