@@ -21,8 +21,8 @@ public class TrainerWorkloadReceiverService {
     private static final String TRAINER_WORKLOAD_REQUEST_QUEUE = "trainer-workload-request-queue";
     private static final String TRAINER_WORKLOAD_RESPONSE_QUEUE = "trainer-workload-response-queue";
     private static final long TIMEOUT_THRESHOLD = 5000;
-    private final TrainerWorkloadService trainerWorkloadService;
     private final JmsTemplate jmsTemplate;
+    private final TrainerWorkloadHelper trainerWorkloadHelper;
 
     /**
      * Listener for the TRAINER_WORKLOAD_REQUEST_QUEUE.
@@ -35,7 +35,7 @@ public class TrainerWorkloadReceiverService {
         log.debug("Processing WorkloadRequest");
         long startTime = System.currentTimeMillis();
 
-        BigDecimal workload = trainerWorkloadService.getTrainerWorkload(request.getUsername(),
+        BigDecimal workload = trainerWorkloadHelper.getTrainerWorkload(request.getUsername(),
             Integer.parseInt(request.getTrainingYear()),
             Integer.parseInt(request.getTrainingMonth()));
 
