@@ -11,6 +11,7 @@ spring:
       database: trainerWorkloadDB
       port: 27017
       host: localhost
+      auto-index-creation: true
   cloud:
     loadbalancer:
       stats:
