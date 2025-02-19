@@ -1,42 +1,34 @@
 package com.example.trainerworkloadservice.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.math.BigDecimal;
+import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "trainerWorkloadSummary")
 public class TrainerWorkload {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "training_year")
-    private int year;
-    @Column(name = "training_month")
-    private int month;
-    private BigDecimal duration;
-
-    @ManyToOne
-    @JoinColumn(name = "trainer_username")
-    private Trainer trainer;
+    private String id;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private Boolean status;
+    private Map<Integer, TrainingYear> trainingYears;
 
     /**
      * constructor.
      */
-    public TrainerWorkload(int year, int month, BigDecimal duration, Trainer trainer) {
-        this.year = year;
-        this.month = month;
-        this.duration = duration;
-        this.trainer = trainer;
+    public TrainerWorkload(String username, String firstName, String lastName, Boolean status) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.status = status;
     }
 }
