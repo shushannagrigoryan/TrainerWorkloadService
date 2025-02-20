@@ -6,8 +6,8 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      username: mongoUsername
-      password: mongoPassword
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
       database: trainerWorkloadDB
       port: 27017
       host: localhost
