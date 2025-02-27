@@ -52,7 +52,7 @@ public class TrainerWorkloadHelper {
      * @return {@code BigDecimal}
      */
     public BigDecimal updateWorkload(BigDecimal trainerWorkload,
-                                      BigDecimal additionalWorkload, ActionType actionType) {
+                                     BigDecimal additionalWorkload, ActionType actionType) {
         log.debug("Updating workload based on actionType: {} ", actionType.name());
         if (actionType.equals(ActionType.ADD)) {
             return trainerWorkload.add(additionalWorkload);

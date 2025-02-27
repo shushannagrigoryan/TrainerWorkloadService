@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -18,10 +17,9 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class UpdateTrainerWorkloadReceiverService {
     private static final String UPDATE_TRAINER_WORKLOAD_QUEUE = "update-trainer-workload-queue";
-    private static final String UPDATE_TRAINER_WORKLOAD_RESPONSE_QUEUE = "update-trainer-workload-response-queue";
     private static final long TIMEOUT_THRESHOLD = 5000;
     private final TrainerWorkloadService trainerWorkloadService;
-    private final JmsTemplate jmsTemplate;
+    private final UpdateTrainerWorkloadSender updateTrainerWorkloadSender;
 
     /**
      * receiveMessage for update trainer's workload.
@@ -50,8 +48,8 @@ public class UpdateTrainerWorkloadReceiverService {
             log.warn("Processing took too long: {}", time);
             throw new RuntimeException("Processing took too long.");
         }
-        jmsTemplate.convertAndSend(UPDATE_TRAINER_WORKLOAD_RESPONSE_QUEUE,
-            "Successfully updated trainer's workload.");
+
+        updateTrainerWorkloadSender.send("Successfully updated trainer's workload.");
 
         log.debug("Successfully received message from ActiveMQ");
         MDC.clear();
